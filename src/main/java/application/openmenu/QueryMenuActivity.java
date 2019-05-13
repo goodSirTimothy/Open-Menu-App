@@ -33,6 +33,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.Calendar;
 
 public class QueryMenuActivity extends AsyncTask<String, Void, String> {
@@ -213,34 +214,37 @@ public class QueryMenuActivity extends AsyncTask<String, Void, String> {
         if (activity == null || activity.isFinishing()){
             return;
         } else {
-            String[] result = firstResult.split("~");
-            TextView connectionProblem = activity.findViewById(R.id.connectionProblem);
-            TableLayout tablePrimary = activity.findViewById(R.id.tablePrimary);
-            TableLayout tableSandwich = activity.findViewById(R.id.tableSandwich);
-            TableLayout tableSoup = activity.findViewById(R.id.tableSoup);
-            TableLayout tableBreakfast = activity.findViewById(R.id.tableBreakfast);
-            TableLayout tableSides = activity.findViewById(R.id.tableSides);
-            TableLayout tableDrinks = activity.findViewById(R.id.tableDrinks);
-            TableLayout tableDesserts = activity.findViewById(R.id.tableDesserts);
-            TableLayout tableWeekly = activity.findViewById(R.id.tableWeekly);
-            TableLayout tableMonthly = activity.findViewById(R.id.tableMonthly);
-            if(tableNumber == 0) {
-                // reset the tables values.
-                tableReset(tablePrimary, tableSandwich, tableSoup, tableSides, tableDrinks, tableDesserts, tableWeekly, tableMonthly, tableBreakfast);
-                getMenuDay(result[0].split("/"), tablePrimary, tableSides, tableDrinks, connectionProblem,activity);
-                breakfastTable(result[2].split("/"), connectionProblem, activity);
-            } else if (tableNumber == 1){
-                // reset the tables values.
-                tableReset(tablePrimary, tableSandwich, tableSoup, tableSides, tableDrinks, tableDesserts, tableWeekly, tableMonthly, tableBreakfast);
-                getMenuDay(result[0].split("/"), tablePrimary, tableSides, tableDesserts, connectionProblem,activity);
-                checkArrayAndSetupTables(result[1].split("/"), connectionProblem,activity);
-                breakfastTable(result[2].split("/"), connectionProblem, activity);
-            } else if (tableNumber == 2){
-                // reset the tables values.
-                tableReset(tablePrimary, tableSandwich, tableSoup, tableSides, tableDrinks, tableDesserts, tableWeekly, tableMonthly, tableBreakfast);
-                getMenuDay(result[0].split("/"), tablePrimary, tableSides, tableDesserts, connectionProblem,activity);
-                checkArrayAndSetupTables(result[1].split("/"), connectionProblem,activity);
-                breakfastTable(result[2].split("/"), connectionProblem, activity);
+            if(!connectionError) {
+                String[] result = firstResult.split("~");
+                TextView connectionProblem = activity.findViewById(R.id.connectionProblem);
+                TableLayout tablePrimary = activity.findViewById(R.id.tablePrimary);
+                TableLayout tableSandwich = activity.findViewById(R.id.tableSandwich);
+                TableLayout tableSoup = activity.findViewById(R.id.tableSoup);
+                TableLayout tableBreakfast = activity.findViewById(R.id.tableBreakfast);
+                TableLayout tableSides = activity.findViewById(R.id.tableSides);
+                TableLayout tableDrinks = activity.findViewById(R.id.tableDrinks);
+                TableLayout tableDesserts = activity.findViewById(R.id.tableDesserts);
+                TableLayout tableWeekly = activity.findViewById(R.id.tableWeekly);
+                TableLayout tableMonthly = activity.findViewById(R.id.tableMonthly);
+                Log.d("Check Arrays: ", "result = " + Arrays.toString(result));
+                if (tableNumber == 0) {
+                    // reset the tables values.
+                    tableReset(tablePrimary, tableSandwich, tableSoup, tableSides, tableDrinks, tableDesserts, tableWeekly, tableMonthly, tableBreakfast);
+                    getMenuDay(result[0].split("/"), tablePrimary, tableSides, tableDrinks, connectionProblem, activity);
+                    breakfastTable(result[2].split("/"), connectionProblem, activity);
+                } else if (tableNumber == 1) {
+                    // reset the tables values.
+                    tableReset(tablePrimary, tableSandwich, tableSoup, tableSides, tableDrinks, tableDesserts, tableWeekly, tableMonthly, tableBreakfast);
+                    getMenuDay(result[0].split("/"), tablePrimary, tableSides, tableDesserts, connectionProblem, activity);
+                    checkArrayAndSetupTables(result[1].split("/"), connectionProblem, activity);
+                    breakfastTable(result[2].split("/"), connectionProblem, activity);
+                } else if (tableNumber == 2) {
+                    // reset the tables values.
+                    tableReset(tablePrimary, tableSandwich, tableSoup, tableSides, tableDrinks, tableDesserts, tableWeekly, tableMonthly, tableBreakfast);
+                    getMenuDay(result[0].split("/"), tablePrimary, tableSides, tableDesserts, connectionProblem, activity);
+                    checkArrayAndSetupTables(result[1].split("/"), connectionProblem, activity);
+                    breakfastTable(result[2].split("/"), connectionProblem, activity);
+                }
             }
         }
     }

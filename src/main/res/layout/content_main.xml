@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="application.jett50two.openmenu.MainActivity"
+    tools:context="application.openmenu.MainActivity"
     tools:showIn="@layout/activity_main">
 
 
@@ -31,9 +31,7 @@
                 android:layout_height="68sp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="0dp"
-                app:srcCompat="@drawable/elimcare"
-                android:contentDescription="" />
+                android:layout_marginTop="0dp"/>
         </RelativeLayout>
 
 
