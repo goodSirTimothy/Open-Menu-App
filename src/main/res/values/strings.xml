@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Open Menu</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_diet">Diet: </string>
+    <string name="menu_meal">Meal:</string>
+    <string name="menu_side">Sides:</string>
+    <string name="menu_drink">Drinks:</string>
+    <string name="menu_desert">Desert:</string>
+    <string name="about_open_menu">About Open Menu</string>
+    <string name="credits">Credits</string>
+</resources>
