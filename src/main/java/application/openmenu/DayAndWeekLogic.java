@@ -134,7 +134,8 @@ class DayAndWeekLogic {
 
     String getMonth(){
         Calendar calendar = Calendar.getInstance();
-        return "" +  calendar.get(Calendar.MONTH) + 1;
+        int month = calendar.get(Calendar.MONTH) + 1;
+        return "" +  month;
     }
 
     String getDay(){

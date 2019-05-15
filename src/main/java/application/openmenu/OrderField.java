@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by Omega on 5/10/2018.
@@ -48,9 +49,14 @@ public class OrderField extends AppCompatActivity implements View.OnClickListene
             TextView tvName = findViewById(R.id.tvName);
             tvRoomNum.setText("Room # " + iRoom[1]);
             tvName.setText(iRoom[3] + ", " + iRoom[4]);
-            tvDiet.setText("Food Restriction:\n\t" + iRoom[5]
-            + "\nFluid Restriction:\n\t" + iRoom[6]
-            + "\nOther Notes:\n\t" + iRoom[7]);
+            if (iRoom.length > 7) {
+                tvDiet.setText("Food Restriction:\n\t" + iRoom[5]
+                        + "\nFluid Restriction:\n\t" + iRoom[6]
+                        + "\nOther Notes:\n\t" + iRoom[7]);
+            } else {
+                tvDiet.setText("Food Restriction:\n\t" + iRoom[5]
+                        + "\nFluid Restriction:\n\t" + iRoom[6]);
+            }
         } else if (iGuest!=null){
             TextView tvRoomNum = findViewById(R.id.tvRoomNum);
             TextView tvName = findViewById(R.id.tvName);
@@ -89,6 +95,8 @@ public class OrderField extends AppCompatActivity implements View.OnClickListene
     }
 
     private void setValues(){
+        TextView tvRoomNum = findViewById(R.id.tvRoomNum);
+        TextView tvName = findViewById(R.id.tvName);
         LinearLayout layNameNum = findViewById(R.id.layNameNum);
         tvDiet = findViewById(R.id.tvDiet);
         tvPrimaryFood = findViewById(R.id.tvPrimary);
@@ -102,6 +110,8 @@ public class OrderField extends AppCompatActivity implements View.OnClickListene
 
         Button send = findViewById(R.id.sendBtn);
 
+        tvRoomNum.setOnClickListener(this);
+        tvName.setOnClickListener(this);
         layNameNum.setOnClickListener(this);
         layPrimaryFood.setOnClickListener(this);
         laySide.setOnClickListener(this);
@@ -115,6 +125,24 @@ public class OrderField extends AppCompatActivity implements View.OnClickListene
     public void onClick(View view) {
         Intent iMenuControl;
         switch (view.getId()){
+            case R.id.tvRoomNum:{
+                iMenuControl = new Intent(this, Rooms.class);
+                iMenuControl.putExtra("location", "location");
+                sendOldData = new String[]{tvPrimaryFood.getText().toString(), tvSide.getText().toString(),
+                        tvDrink.getText().toString(), tvDesserts.getText().toString()};
+                iMenuControl.putExtra("oldData", sendOldData);
+                startActivity(iMenuControl);
+                break;
+            }
+            case R.id.tvName:{
+                iMenuControl = new Intent(this, Rooms.class);
+                iMenuControl.putExtra("location", "location");
+                sendOldData = new String[]{tvPrimaryFood.getText().toString(), tvSide.getText().toString(),
+                        tvDrink.getText().toString(), tvDesserts.getText().toString()};
+                iMenuControl.putExtra("oldData", sendOldData);
+                startActivity(iMenuControl);
+                break;
+            }
             case R.id.layNameNum:{
                 iMenuControl = new Intent(this, Rooms.class);
                 iMenuControl.putExtra("location", "location");
@@ -169,37 +197,39 @@ public class OrderField extends AppCompatActivity implements View.OnClickListene
             }
             case R.id.sendBtn: {
                 if(iRoom != null) {
-                    saveAndLoad load = new saveAndLoad();
-                    DayAndWeekLogic getInfo = new DayAndWeekLogic();
-                    QuerySubmitActivity submit = new QuerySubmitActivity(this);
-                    submit.execute("submit", load.getServerURL(this), load.getDatabaseURL(this), load.getDatabaseName(this),
-                            load.getUsername(this), load.getPassword(this), load.getPort(this), "/insertOrders.php", iRoom[1],
-                            tvPrimaryFood.getText().toString(), tvSide.getText().toString(), tvDrink.getText().toString(), tvDesserts.getText().toString(),
-                            getInfo.getMonth(), getInfo.getDay(), getInfo.getYear(), "1", "0");
+                    final QuerySubmitActivity submit = new QuerySubmitActivity(this);
+                    final Context context = this;
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                    alertDialogBuilder.setMessage("Are you sure you want send the information?");
+                    alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int id) {
+                            DayAndWeekLogic getInfo = new DayAndWeekLogic();
+                            saveAndLoad load = new saveAndLoad();
+                            submit.execute("submit", load.getServerURL(context), load.getDatabaseURL(context), load.getDatabaseName(context),
+                                    load.getUsername(context), load.getPassword(context), load.getPort(context), "/insertOrders.php", iRoom[1],
+                                    tvPrimaryFood.getText().toString(), tvSide.getText().toString(), tvDrink.getText().toString(), tvDesserts.getText().toString(),
+                                    getInfo.getMonth(), getInfo.getDay(), getInfo.getYear(), "1", "0");
+                        }
+                    });
+
+                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int id) {
+
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 } else if (iGuest!=null){
                     TextView tvRoomNum = findViewById(R.id.tvRoomNum);
                     TextView tvName = findViewById(R.id.tvName);
                     tvRoomNum.setText("");
                     tvName.setText(iGuest);
+                } else {
+
+                    Toast.makeText(this,"Please select a room or guest.",Toast.LENGTH_LONG).show();
                 }
-                // do something here and don't write super.onBackPressed()
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setMessage("Are you sure you want send the information?");
-                alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int id) {
-
-                    }
-                });
-
-                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int id) {
-
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
                 break;
             }
         }

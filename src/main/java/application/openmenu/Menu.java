@@ -71,6 +71,7 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
             findViewById(R.id.layoutSandwich).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutSoup).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutSides).setVisibility(View.GONE);
+            findViewById(R.id.tableBreakfast).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutDrinks).setVisibility(View.GONE);
             findViewById(R.id.layoutDessserts).setVisibility(View.GONE);
             findViewById(R.id.layoutWeekly).setVisibility(View.VISIBLE);
@@ -79,6 +80,7 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
             findViewById(R.id.layoutPrimary).setVisibility(View.GONE);
             findViewById(R.id.layoutSandwich).setVisibility(View.GONE);
             findViewById(R.id.layoutSoup).setVisibility(View.GONE);
+            findViewById(R.id.tableBreakfast).setVisibility(View.GONE);
             findViewById(R.id.layoutSides).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutDrinks).setVisibility(View.GONE);
             findViewById(R.id.layoutDessserts).setVisibility(View.GONE);
@@ -88,6 +90,7 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
             findViewById(R.id.layoutPrimary).setVisibility(View.GONE);
             findViewById(R.id.layoutSandwich).setVisibility(View.GONE);
             findViewById(R.id.layoutSoup).setVisibility(View.GONE);
+            findViewById(R.id.tableBreakfast).setVisibility(View.GONE);
             findViewById(R.id.layoutSides).setVisibility(View.GONE);
             findViewById(R.id.layoutDrinks).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutDessserts).setVisibility(View.GONE);
@@ -97,6 +100,7 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
             findViewById(R.id.layoutPrimary).setVisibility(View.GONE);
             findViewById(R.id.layoutSandwich).setVisibility(View.GONE);
             findViewById(R.id.layoutSoup).setVisibility(View.GONE);
+            findViewById(R.id.tableBreakfast).setVisibility(View.GONE);
             findViewById(R.id.layoutSides).setVisibility(View.GONE);
             findViewById(R.id.layoutDrinks).setVisibility(View.GONE);
             findViewById(R.id.layoutDessserts).setVisibility(View.VISIBLE);
@@ -106,6 +110,7 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
             findViewById(R.id.layoutPrimary).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutSandwich).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutSoup).setVisibility(View.VISIBLE);
+            findViewById(R.id.tableBreakfast).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutSides).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutDrinks).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutDessserts).setVisibility(View.VISIBLE);
@@ -173,6 +178,7 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
             case R.id.btnBreakfast: {
                 TextView tvMenuDisplay = findViewById(R.id.menuType);
                 tvMenuDisplay.setText("Breakfast");
+                tvMenuDisplay.setVisibility(View.VISIBLE);
                 saveAndLoad load = new saveAndLoad();
                 QueryMenuActivity getMenu = new QueryMenuActivity(this);
                 getMenu.execute("breakfast", load.getServerURL(this), load.getDatabaseURL(this), load.getDatabaseName(this),
@@ -185,6 +191,7 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
             case R.id.btnLunch: {
                 TextView tvMenuDisplay = findViewById(R.id.menuType);
                 tvMenuDisplay.setText("Lunch");
+                tvMenuDisplay.setVisibility(View.VISIBLE);
                 setMenuVisibility();
                 saveAndLoad load = new saveAndLoad();
                 QueryMenuActivity getMenu = new QueryMenuActivity(this);
@@ -198,6 +205,7 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
             case R.id.btnSupper: {
                 TextView tvMenuDisplay = findViewById(R.id.menuType);
                 tvMenuDisplay.setText("Supper");
+                tvMenuDisplay.setVisibility(View.VISIBLE);
                 setMenuVisibility();
                 saveAndLoad load = new saveAndLoad();
                 QueryMenuActivity getMenu = new QueryMenuActivity(this);

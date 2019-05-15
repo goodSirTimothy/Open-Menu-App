@@ -27,19 +27,14 @@ public class AdminLockLogin   extends AppCompatActivity implements View.OnClickL
             case R.id.login: {
                 TextView tvError = findViewById(R.id.tvError);
                 saveAndLoad saveAndLoad = new saveAndLoad();
-                EditText user = findViewById(R.id.user);
-                if (saveAndLoad.getAdminUsername(this).equals(user.getText().toString())) {
-                    EditText pass = findViewById(R.id.pass);
-                    if (saveAndLoad.getAdminPassword(this).equals(pass.getText().toString())) {
-                        intentExecute(Settings.class);
-                    } else {
-                        tvError.setVisibility(View.VISIBLE);
-                        tvError.setText("Username/password did not match.");
-                    }
+                EditText pass = findViewById(R.id.pass);
+                if (saveAndLoad.getAdminPassword(this).equals(pass.getText().toString())) {
+                    intentExecute(Settings.class);
                 } else {
                     tvError.setVisibility(View.VISIBLE);
-                    tvError.setText("Username/password did not match.");
+                    tvError.setText("password did not match.");
                 }
+
                 break;
             }
             case R.id.back: {

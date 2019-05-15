@@ -34,11 +34,10 @@ public class SettingsAdminLock  extends AppCompatActivity implements View.OnClic
                 if (findViewById(R.id.layoutOldAdmin).getVisibility() == View.GONE) {
                     saveAndLoad save = new saveAndLoad();
                     // get the admin username and password
-                    EditText newUsername = findViewById(R.id.newUser);
                     EditText newPassword = findViewById(R.id.newPass);
-                    if(!"".equals(newUsername.getText().toString()) && !"".equals(newPassword.getText().toString())){
+                    if( !"".equals(newPassword.getText().toString())){
                         // pass the username and password into an array to save them.
-                        String[] saveArray = {newUsername.getText().toString(), newPassword.getText().toString()};
+                        String[] saveArray = {newPassword.getText().toString()};
                         // save them.
                         save.saveInformation("admin.info", saveArray, this);
                         intentExecute();
@@ -48,30 +47,23 @@ public class SettingsAdminLock  extends AppCompatActivity implements View.OnClic
                     }
                 } else {
                     saveAndLoad saveAndLoad = new saveAndLoad();
-                    EditText oldUsername = findViewById(R.id.oldUser);
-                    if (saveAndLoad.getAdminUsername(this).equals(oldUsername.getText().toString())) {
-                        EditText oldPassword = findViewById(R.id.oldPass);
-                        if (saveAndLoad.getAdminPassword(this).equals(oldPassword.getText().toString())) {
-                            // get the admin username and password
-                            EditText newUsername = findViewById(R.id.newUser);
-                            EditText newPassword = findViewById(R.id.newPass);
-                            if(!"".equals(newUsername.getText().toString()) && !"".equals(newPassword.getText().toString())){
-                                // pass the username and password into an array to save them.
-                                String[] saveArray = {newUsername.getText().toString(), newPassword.getText().toString()};
-                                // save them.
-                                saveAndLoad.saveInformation("admin.info", saveArray, this);
-                                intentExecute();
-                            } else {
-                                tvError.setVisibility(View.VISIBLE);
-                                tvError.setText("Values cannot be blank.");
-                            }
+                    EditText oldPassword = findViewById(R.id.oldPass);
+                    if (saveAndLoad.getAdminPassword(this).equals(oldPassword.getText().toString())) {
+                        // get the admin username and password
+                        EditText newPassword = findViewById(R.id.newPass);
+                        if (!"".equals(newPassword.getText().toString())) {
+                            // pass the username and password into an array to save them.
+                            String[] saveArray = {newPassword.getText().toString()};
+                            // save them.
+                            saveAndLoad.saveInformation("admin.info", saveArray, this);
+                            intentExecute();
                         } else {
                             tvError.setVisibility(View.VISIBLE);
-                            tvError.setText("Username/password did not match.");
+                            tvError.setText("Values cannot be blank.");
                         }
                     } else {
                         tvError.setVisibility(View.VISIBLE);
-                        tvError.setText("Username/password did not match.");
+                        tvError.setText("password did not match.");
                     }
                 }
                 break;

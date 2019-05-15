@@ -47,14 +47,6 @@
                         android:background="#c0c0c0" />
 
                     <EditText
-                        android:id="@+id/user"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="Username"
-                        android:inputType="textPersonName" />
-
-                    <EditText
                         android:id="@+id/pass"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

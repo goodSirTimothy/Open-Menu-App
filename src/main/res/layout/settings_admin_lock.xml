@@ -60,18 +60,8 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="serif"
                         android:gravity="center_horizontal"
-                        android:text="Old Username/Password"
+                        android:text="Old Password"
                         android:textSize="18sp" />
-
-                    <EditText
-                        android:id="@+id/oldUser"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:ems="10"
-                        android:hint="Old Username"
-                        android:inputType="textPersonName" />
 
                     <EditText
                         android:id="@+id/oldPass"
@@ -96,21 +86,13 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="serif"
                         android:gravity="center_horizontal"
-                        android:text="New Username/Password"
+                        android:text="New Password"
                         android:textSize="18sp" />
 
                     <View
                         android:layout_width="fill_parent"
                         android:layout_height="2dp"
                         android:background="#c0c0c0" />
-
-                    <EditText
-                        android:id="@+id/newUser"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="New Username"
-                        android:inputType="textPersonName" />
 
                     <EditText
                         android:id="@+id/newPass"

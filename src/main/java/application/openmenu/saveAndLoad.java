@@ -43,11 +43,8 @@ class saveAndLoad {
         }
     }
 
-    String getAdminUsername(Context context){
-        return loadinformation("admin.info", 0, context);
-    }
     String getAdminPassword(Context context){
-        return loadinformation("admin.info", 1, context);
+        return loadinformation("admin.info", 0, context);
     }
 
     String getServerURL(Context context){
@@ -66,6 +63,7 @@ class saveAndLoad {
         }
         return loadinformation("server.info", 3, context);
     }
+
     String getUsername(Context context){
         return loadinformation("user.info", 0, context);
     }

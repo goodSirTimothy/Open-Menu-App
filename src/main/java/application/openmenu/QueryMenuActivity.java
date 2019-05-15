@@ -39,7 +39,8 @@ import java.util.Calendar;
 public class QueryMenuActivity extends AsyncTask<String, Void, String> {
     private WeakReference<Menu> activityReference;
     private boolean connectionError = false;
-    private int tableNumber, properEntreeIndex = 0, properSandwichIndex = 0, properSideIndex = 0, properSoupIndex = 0, properDrinkIndex = 0, properDessertIndex = 0, moveIndexBack = 0;
+    private int tableNumber, properEntreeIndex = 0, properSandwichIndex = 0, properSideIndex = 0, sidesPlaced = 0, properSoupIndex = 0, properDrinkIndex = 0, properDessertIndex = 0,
+            featureEntree = 0, featureSide = 0, featureDessert = 0;
     private String error;
 
     /**
@@ -317,6 +318,7 @@ public class QueryMenuActivity extends AsyncTask<String, Void, String> {
 
 
     private void populateFeatureTables(String[] resultArray, TableLayout table0, TableLayout table1, TableLayout table2, Context context) {
+        int moveIndexBack = 0;
         TableRow row = new TableRow(context);
         TableRow.LayoutParams tableRowParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1f);
         tableRowParams.setMargins(5, 5, 5, 5);
@@ -325,11 +327,13 @@ public class QueryMenuActivity extends AsyncTask<String, Void, String> {
             // set the table for the primary feature
             row.addView(setupRowViewCheckbox(resultArray[0], context));
             table0.addView(row, 0);
+            featureEntree++;
             // set the table for sides
             if (!"".equals(resultArray[1])) {
                 row = new TableRow(context);
                 row.addView(setupRowViewCheckbox(resultArray[1], context));
                 table1.addView(row, 0);
+                featureSide++;
             } else {
                 moveIndexBack++;
             }
@@ -337,6 +341,7 @@ public class QueryMenuActivity extends AsyncTask<String, Void, String> {
                 row = new TableRow(context);
                 row.addView(setupRowViewCheckbox(resultArray[2], context));
                 table1.addView(row, 1 - moveIndexBack);
+                featureSide++;
             } else {
                 moveIndexBack++;
             }
@@ -344,11 +349,13 @@ public class QueryMenuActivity extends AsyncTask<String, Void, String> {
                 row = new TableRow(context);
                 row.addView(setupRowViewCheckbox(resultArray[3], context));
                 table1.addView(row, 2 - moveIndexBack);
+                featureSide++;
             }
             // set the table for dessert (or drink for breakfast)
             row = new TableRow(context);
             row.addView(setupRowViewCheckbox(resultArray[4], context));
             table2.addView(row, 0);
+            featureDessert++;
         }
     }
 
@@ -370,7 +377,7 @@ public class QueryMenuActivity extends AsyncTask<String, Void, String> {
                     row.setLayoutParams(tableRowParams);
                     String[] resultArray = result[i].split(",");
                     for (int j = 0; j<resultArray.length; j++){
-                        // Log.d("Check Arrays: ", "resultArray " + j + " = " + resultArray[j]);
+                        Log.d("Check Arrays: ", "resultArray " + j + " = " + resultArray[j]);
                     }
                     populateTables(resultArray, i, row, context);
                 }
@@ -402,44 +409,58 @@ public class QueryMenuActivity extends AsyncTask<String, Void, String> {
         TableLayout tableDrinks = activity.findViewById(R.id.tableDrinks);
         TableLayout tableDesserts = activity.findViewById(R.id.tableDesserts);
         updateProperIndexValues(resultArray[1]);
+        Log.d("Check Arrays: ", "properSideIndex = " + properSideIndex);
         // populate the tables with information from the database.
         switch (resultArray[1]) {
             case "Entrees":
                 // set the table for the primary feature
                 row.addView(setupRowViewCheckbox(resultArray[2], context));
-                row.addView(setupRowViewTextview(resultArray[3], context));
-                tableEntree.addView(row, i+1-properEntreeIndex);
+                if(resultArray.length>3) {
+                    row.addView(setupRowViewTextview(resultArray[3], context));
+                }
+                tableEntree.addView(row, i+featureEntree-properEntreeIndex);
                 break;
             case "Sandwich":
                 // set the table for the primary feature
                 row.addView(setupRowViewCheckbox(resultArray[2], context));
-                row.addView(setupRowViewTextview(resultArray[3], context));
+                if(resultArray.length>3) {
+                    row.addView(setupRowViewTextview(resultArray[3], context));
+                }
                 tableSandwich.addView(row, i-properSandwichIndex);
                 break;
             case "Soups":
                 // set the table for the primary feature
                 row.addView(setupRowViewCheckbox(resultArray[2], context));
-                row.addView(setupRowViewTextview(resultArray[3], context));
+                if(resultArray.length>3) {
+                    row.addView(setupRowViewTextview(resultArray[3], context));
+                }
                 tableSoup.addView(row, i-properSoupIndex);
                 break;
             // set the table for the Sides
             case "Sides":
                 row.addView(setupRowViewCheckbox(resultArray[2], context));
-                row.addView(setupRowViewTextview(resultArray[3], context));
-                tableSides.addView(row, i+(3-moveIndexBack)-properSideIndex);
+                if(resultArray.length>3) {
+                    row.addView(setupRowViewTextview(resultArray[3], context));
+                }
+                tableSides.addView(row, i+featureSide-properSideIndex);
+                sidesPlaced++;
                 break;
             case "Drinks":
                 // set the table for the Drinks
                 row.addView(setupRowViewCheckbox(resultArray[2], context));
-                row.addView(setupRowViewTextview(resultArray[3], context));
+                if(resultArray.length>3) {
+                    row.addView(setupRowViewTextview(resultArray[3], context));
+                }
                 tableDrinks.addView(row, i-properDrinkIndex);
                 properSoupIndex++;
                 break;
             case "Desserts":
                 // set the table for the Desserts
                 row.addView(setupRowViewCheckbox(resultArray[2], context));
-                row.addView(setupRowViewTextview(resultArray[3], context));
-                tableDesserts.addView(row, i+1-properDessertIndex);
+                if(resultArray.length>3) {
+                    row.addView(setupRowViewTextview(resultArray[3], context));
+                }
+                tableDesserts.addView(row, i+featureDessert-properDessertIndex);
                 break;
         }
     }
@@ -449,18 +470,36 @@ public class QueryMenuActivity extends AsyncTask<String, Void, String> {
      * @param resultString
      */
     private void updateProperIndexValues(String resultString){
-        if(!"Entrees".equals(resultString))
+        if(!"Entrees".equals(resultString)) {
             properEntreeIndex++;
-        if(!"Sandwich".equals(resultString))
+            Log.d("Update Index Values ", "properEntreeIndex = " + properEntreeIndex +
+                    "\nresultString = " + resultString);
+        }
+        if(!"Sandwich".equals(resultString)) {
             properSandwichIndex++;
-        if(!"Soups".equals(resultString))
+            Log.d("Update Index Values ", "properSandwichIndex = " + properSandwichIndex +
+                    "\nresultString = " + resultString);
+        }
+        if(!"Soups".equals(resultString)) {
             properSoupIndex++;
-        if(!"Sides".equals(resultString))
+            Log.d("Update Index Values ", "properSoupIndex = " + properSoupIndex +
+                    "\nresultString = " + resultString);
+        }
+        if(!"Sides".equals(resultString)) {
             properSideIndex++;
-        if(!"Drinks".equals(resultString))
+            Log.d("Update Index Values ", "properSideIndex = " + properSideIndex +
+                    "\nresultString = " + resultString);
+        }
+        if(!"Drinks".equals(resultString)) {
             properDrinkIndex++;
-        if(!"Desserts".equals(resultString))
+            Log.d("Update Index Values ", "properDrinkIndex = " + properDrinkIndex +
+                    "\nresultString = " + resultString);
+        }
+        if(!"Desserts".equals(resultString)) {
             properDessertIndex++;
+            Log.d("Update Index Values ", "properDessertIndex = " + properDessertIndex +
+                    "\nresultString = " + resultString);
+        }
     }
 
     /**
@@ -481,15 +520,16 @@ public class QueryMenuActivity extends AsyncTask<String, Void, String> {
                     row.setLayoutParams(tableRowParams);
                     String[] resultArray = result[i].split(",");
                     for (int j = 0; j < resultArray.length; j++) {
-                        // Log.d("Check Arrays: ", "resultArray " + j + " = " + resultArray[j]);
+                        Log.d("Check Arrays: ", "resultArray " + j + " = " + resultArray[j]);
                     }
+                    Log.d("Check Arrays: ", "properSideIndex = " + properSideIndex);
                     Menu activity = activityReference.get();
                     TableLayout tableBreakfast = activity.findViewById(R.id.tableBreakfast);
                     TableLayout tableSides = activity.findViewById(R.id.tableSides);
                     if(resultArray[1].equals("Sides")){
                         row.addView(setupRowViewCheckbox(resultArray[2], context));
                         row.addView(setupRowViewTextview(resultArray[3], context));
-                        tableSides.addView(row, i + properSideIndex - properIndexSide);
+                        tableSides.addView(row, i + featureSide + sidesPlaced - properIndexSide);
                         properIndexBreakfast++;
                     }else {
                         row.addView(setupRowViewCheckbox(resultArray[2], context));

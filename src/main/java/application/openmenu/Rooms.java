@@ -51,10 +51,10 @@ public class Rooms extends AppCompatActivity implements View.OnClickListener {
                 LinearLayout guestLayout = findViewById(R.id.guestLayout);
                 if(guestLayout.getVisibility() == View.VISIBLE){
                     guestLayout.setVisibility(View.GONE);
-                    findViewById(R.id.bfastTable).setVisibility(View.VISIBLE);
+                    findViewById(R.id.roomTable).setVisibility(View.VISIBLE);
                 } else if(guestLayout.getVisibility() == View.GONE){
                     guestLayout.setVisibility(View.VISIBLE);
-                    findViewById(R.id.bfastTable).setVisibility(View.GONE);
+                    findViewById(R.id.roomTable).setVisibility(View.GONE);
                 }
                 // Toast.makeText(getApplicationContext(),"Test press on Order",Toast.LENGTH_LONG).show();
                 break;

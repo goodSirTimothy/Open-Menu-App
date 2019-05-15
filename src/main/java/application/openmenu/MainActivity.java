@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.orders: {
-                intentExecute(OrderField.class);
+                intentExecute(DisplayOrders.class);
                 break;
             }
             case R.id.location: {

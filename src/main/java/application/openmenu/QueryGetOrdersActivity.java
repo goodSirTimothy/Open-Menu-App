@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -34,14 +35,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class QueryRoomActivity extends AsyncTask<String, Void, String> {
-    private WeakReference<Rooms> activityReference;
+public class QueryGetOrdersActivity extends AsyncTask<String, Void, String> {
+    private WeakReference<DisplayOrders> activityReference;
     boolean connectionError = false;
     /**
      *
      * @param context
      */
-    QueryRoomActivity(Rooms context){
+    QueryGetOrdersActivity(DisplayOrders context){
         activityReference = new WeakReference<>(context);
     }
 
@@ -60,7 +61,7 @@ public class QueryRoomActivity extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        if(type.equals("login")){
+        if(type.equals("display")){
             try{
                 String mainURL = params[1];
                 String databaseURL = "localhost";
@@ -70,6 +71,9 @@ public class QueryRoomActivity extends AsyncTask<String, Void, String> {
                 String port = params[6];
                 port = ":" + port;
                 String phpName = params[7];
+                String month = params[8];
+                String day = params[9];
+                String year = params[10];
                 Log.d("URL", mainURL + port + phpName);
                 URL url = new URL(mainURL + port + phpName);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -81,7 +85,10 @@ public class QueryRoomActivity extends AsyncTask<String, Void, String> {
                 String post_data = URLEncoder.encode("username", "UTF-8")+"="+ URLEncoder.encode(username, "UTF-8")+
                         "&"+ URLEncoder.encode("password", "UTF-8")+"="+ URLEncoder.encode(password, "UTF-8")+
                         "&"+ URLEncoder.encode("databaseURL", "UTF-8")+"="+ URLEncoder.encode(databaseURL, "UTF-8")+
-                "&"+ URLEncoder.encode("db", "UTF-8")+"="+ URLEncoder.encode(db, "UTF-8");
+                        "&"+ URLEncoder.encode("db", "UTF-8")+"="+ URLEncoder.encode(db, "UTF-8")+
+                        "&"+ URLEncoder.encode("month", "UTF-8")+"="+ URLEncoder.encode(month, "UTF-8")+
+                        "&"+ URLEncoder.encode("day", "UTF-8")+"="+ URLEncoder.encode(day, "UTF-8")+
+                        "&"+ URLEncoder.encode("year", "UTF-8")+"="+ URLEncoder.encode(year, "UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -101,10 +108,12 @@ public class QueryRoomActivity extends AsyncTask<String, Void, String> {
             } catch (MalformedURLException e) {
                 e.printStackTrace();
                 connectionError = true;
+                Log.d("Closed", "MalformedURLException: " + e);
                 return "error" + e;
             }catch (IOException e){
                 e.printStackTrace();
                 connectionError = true;
+                Log.d("Closed", "IOException" + e);
                 return "error" + e;
             }
 
@@ -118,49 +127,52 @@ public class QueryRoomActivity extends AsyncTask<String, Void, String> {
      */
     @Override
     protected void onPostExecute(final String result) {
-        final Rooms activity = activityReference.get();
+        final DisplayOrders activity = activityReference.get();
         if (activity == null || activity.isFinishing()){
+            Log.d("Closed", "Wat? Why did I close?");
+            Log.d("result", result);
             return;
         } else {
-            TableLayout table = activity.findViewById(R.id.roomTable);
-            TextView connectionProblem = activity.findViewById(R.id.connectionProblem);
-            populateTable(result.split("/"), table, connectionProblem,activity);
+            TableLayout table = activity.findViewById(R.id.ordersTable);
+            table.removeAllViews();
+            Log.d("result", result);
+            populateTable(result.split("/"), table, activity);
         }
     }
 
-    private void populateTable(String[] results, TableLayout table, TextView connectionProblem, final Context context) {
+    private void populateTable(String[] results, TableLayout table, final Context context) {
         TableRow row = new TableRow(context);
         TableRow.LayoutParams tableRowParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1f);
         tableRowParams.setMargins(5, 5, 5, 5);
         // row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
         row.setLayoutParams(tableRowParams);
-        String[] tableHead = {"Hallway", "Room", "First Name", "Last Name", "Food Diet", "Drink Diet", "Other Notes"};
+        String[] tableHead = {"Room", "First Name", "Last Name", "Meal", "Sides", "Drink", "Dessert", "Ordered", "Served"};
         for (String aTableHead : tableHead) {
             row.addView(setupRowView(aTableHead, context));
         }
         table.addView(row, 0);
 
-        if(!connectionError) {
+        if (!connectionError) {
             for (int i = 1; i < results.length + 1; i++) {
-                final String[] resultsArray = results[i - 1].split(",");
+                final String[] resultsArray = results[i - 1].split("\\|");
                 row = new TableRow(context);
                 row.setLayoutParams(tableRowParams);
-                if (resultsArray[2].equals("1")) {
-                    for (int j = 0; j < resultsArray.length; j++) {
-                        if (j != 2) {
-                            row.addView(setupRowView(resultsArray[j], context));
-                        }
+                for (int j = 1; j < resultsArray.length; j++) {
+                    if(j==8){
+                        j = 11;
                     }
+                    row.addView(setupRowView(resultsArray[j], context));
                 }
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Toast.makeText(context, "OrderID = " + resultsArray[0] + "\nRoom ID = " + resultsArray[1],Toast.LENGTH_LONG).show();
                         Intent intent;
                         intent = new Intent(context, OrderField.class);
-                        intent.putExtra("roomInfo", resultsArray);
-                        String[] oldData = activityReference.get().iOldData;
-                        intent.putExtra("oldData", oldData);
-                        context.startActivity(intent);
+                        //intent.putExtra("roomInfo", resultsArray);
+                        //String[] oldData = activityReference.get().iOldData;
+                        //intent.putExtra("oldData", oldData);
+                        //context.startActivity(intent);
                     }
                 });
                 table.addView(row, i);
@@ -170,8 +182,6 @@ public class QueryRoomActivity extends AsyncTask<String, Void, String> {
             for (String result : results) {
                 str = str + result;
             }
-            connectionProblem.setText("There was a problem connecting to the database: \n" + str);
-            connectionProblem.setVisibility(View.VISIBLE);
         }
     }
 
@@ -180,8 +190,8 @@ public class QueryRoomActivity extends AsyncTask<String, Void, String> {
         // This replaces all spaces with a newline for every 3 blank spaces
         str = str.replaceAll("((?:\\w+\\s){2}\\w+)(\\s)", "$1\n");
         tv.setText(str);
-        tv.setTextSize(18);
-        tv.setPadding(5,1,5,1);
+        tv.setTextSize(20);
+        tv.setPadding(5,2,5,3);
         tv.setGravity(Gravity.CENTER);
         return tv;
     }

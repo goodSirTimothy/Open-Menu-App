@@ -11,7 +11,11 @@
 
 package application.openmenu;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -126,8 +130,19 @@ public class QuerySubmitActivity extends AsyncTask<String, Void, String> {
     protected void onPostExecute(final String result) {
         final OrderField activity = activityReference.get();
         if (activity == null || activity.isFinishing()){
+            Log.d("Not Submitted", "dang... MySQL orders wasn't submitted. ");
             return;
         } else {
+            if(result.equals("Insert Complete")){
+                Toast.makeText(activity,"Order Sent!",Toast.LENGTH_SHORT).show();
+                Intent intent;
+                intent = new Intent(activity, MainActivity.class);
+                activity.startActivity(intent);
+            } else {
+                Toast.makeText(activity,"Failed to send order...",Toast.LENGTH_LONG).show();
+            }
+            Log.d("Submitted", "MySQL orders should be updated. " +
+                    "\nResults = " + result);
             //TextView connection = activity.findViewById(R.id.connection);
             //connection.setText(result);
         }
