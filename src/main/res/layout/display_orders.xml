@@ -11,18 +11,11 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView13"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="serif"
-            android:gravity="center_horizontal"
-            android:text="ORDERS"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
-
-        <TextView
             android:id="@+id/showHideSort"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:gravity="center_horizontal"
             android:text="vvv Show Order Sorting vvv" />
 
@@ -31,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textView16"
@@ -153,6 +146,15 @@
                 android:text="Submit" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:gravity="center_horizontal"
+            android:text="ORDERS"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
         <ScrollView
             android:layout_width="match_parent"

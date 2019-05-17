@@ -22,7 +22,6 @@ public class OrderField extends AppCompatActivity implements View.OnClickListene
     Log log;
     String[] iRoom, iOldData, sendOldData;
     String lay1Boxes, lay2Boxes, lay3Boxes, lay4Boxes, iGuest;
-    boolean iExtra;
     TextView tvDiet, tvPrimaryFood, tvSide, tvDrink, tvDesserts;
 
     @Override
@@ -205,11 +204,19 @@ public class OrderField extends AppCompatActivity implements View.OnClickListene
                         @Override
                         public void onClick(DialogInterface dialogInterface, int id) {
                             DayAndWeekLogic getInfo = new DayAndWeekLogic();
+                            String mealType = "";
+                            if(getInfo.getHour()<11){
+                                mealType = "Breakfast";
+                            } else if(getInfo.getHour() >=11 && getInfo.getHour() < 3){
+                                mealType = "Lunch";
+                            } else {
+                                mealType = "Supper";
+                            }
                             saveAndLoad load = new saveAndLoad();
                             submit.execute("submit", load.getServerURL(context), load.getDatabaseURL(context), load.getDatabaseName(context),
                                     load.getUsername(context), load.getPassword(context), load.getPort(context), "/insertOrders.php", iRoom[1],
                                     tvPrimaryFood.getText().toString(), tvSide.getText().toString(), tvDrink.getText().toString(), tvDesserts.getText().toString(),
-                                    getInfo.getMonth(), getInfo.getDay(), getInfo.getYear(), "1", "0");
+                                    getInfo.getMonth(), getInfo.getDay(), getInfo.getYear(), "1", "0", mealType);
                         }
                     });
 

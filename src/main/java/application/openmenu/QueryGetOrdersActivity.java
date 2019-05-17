@@ -74,6 +74,9 @@ public class QueryGetOrdersActivity extends AsyncTask<String, Void, String> {
                 String month = params[8];
                 String day = params[9];
                 String year = params[10];
+                String breakfast = params[11];
+                String lunch = params[12];
+                String supper = params[13];
                 Log.d("URL", mainURL + port + phpName);
                 URL url = new URL(mainURL + port + phpName);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -88,7 +91,10 @@ public class QueryGetOrdersActivity extends AsyncTask<String, Void, String> {
                         "&"+ URLEncoder.encode("db", "UTF-8")+"="+ URLEncoder.encode(db, "UTF-8")+
                         "&"+ URLEncoder.encode("month", "UTF-8")+"="+ URLEncoder.encode(month, "UTF-8")+
                         "&"+ URLEncoder.encode("day", "UTF-8")+"="+ URLEncoder.encode(day, "UTF-8")+
-                        "&"+ URLEncoder.encode("year", "UTF-8")+"="+ URLEncoder.encode(year, "UTF-8");
+                        "&"+ URLEncoder.encode("year", "UTF-8")+"="+ URLEncoder.encode(year, "UTF-8")+
+                        "&"+ URLEncoder.encode("breakfast", "UTF-8")+"="+ URLEncoder.encode(breakfast, "UTF-8")+
+                        "&"+ URLEncoder.encode("lunch", "UTF-8")+"="+ URLEncoder.encode(lunch, "UTF-8")+
+                        "&"+ URLEncoder.encode("supper", "UTF-8")+"="+ URLEncoder.encode(supper, "UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -157,7 +163,7 @@ public class QueryGetOrdersActivity extends AsyncTask<String, Void, String> {
                 final String[] resultsArray = results[i - 1].split("\\|");
                 row = new TableRow(context);
                 row.setLayoutParams(tableRowParams);
-                for (int j = 1; j < resultsArray.length; j++) {
+                for (int j = 1; j < resultsArray.length-1; j++) {
                     if(j==8){
                         j = 11;
                     }

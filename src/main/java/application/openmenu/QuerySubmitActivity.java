@@ -73,6 +73,7 @@ public class QuerySubmitActivity extends AsyncTask<String, Void, String> {
                 String year = params[15];
                 String ordered = params[16];
                 String served = params[17];
+                String mealTime = params[18];
                 URL url = new URL(mainURL + ":" + port + phpName);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -93,7 +94,8 @@ public class QuerySubmitActivity extends AsyncTask<String, Void, String> {
                         "&"+ URLEncoder.encode("day", "UTF-8")+"="+ URLEncoder.encode(day, "UTF-8")+
                         "&"+ URLEncoder.encode("year", "UTF-8")+"="+ URLEncoder.encode(year, "UTF-8")+
                         "&"+ URLEncoder.encode("ordered", "UTF-8")+"="+ URLEncoder.encode(ordered, "UTF-8")+
-                        "&"+ URLEncoder.encode("served", "UTF-8")+"="+ URLEncoder.encode(served, "UTF-8");
+                        "&"+ URLEncoder.encode("served", "UTF-8")+"="+ URLEncoder.encode(served, "UTF-8")+
+                        "&"+ URLEncoder.encode("mealTime", "UTF-8")+"="+ URLEncoder.encode(mealTime, "UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();

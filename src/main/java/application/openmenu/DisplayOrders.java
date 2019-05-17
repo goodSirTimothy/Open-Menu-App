@@ -3,13 +3,10 @@ package application.openmenu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,11 +24,27 @@ public class DisplayOrders extends AppCompatActivity implements View.OnClickList
         btnSwitchView.setOnClickListener(this);
 
         DayAndWeekLogic date = new DayAndWeekLogic();
+        String breakfast = "0";
+        String lunch = "0";
+        String supper = "0";
+        if(date.getHour()<11){
+            CheckBox checkBox = findViewById(R.id.checkBoxBreakfast);
+            checkBox.setChecked(true);
+            breakfast = "1";
+        } else if(date.getHour() >=11 && date.getHour() < 3){
+            CheckBox checkBox = findViewById(R.id.checkBoxLunch);
+            checkBox.setChecked(true);
+            lunch = "1";
+        } else {
+            CheckBox checkBox = findViewById(R.id.checkBoxSupper);
+            checkBox.setChecked(true);
+            supper = "1";
+        }
         saveAndLoad load = new saveAndLoad();
         QueryGetOrdersActivity signing = new QueryGetOrdersActivity(this);
         String condition = "display";
         signing.execute(condition, load.getServerURL(this), load.getDatabaseURL(this), load.getDatabaseName(this),
-                load.getUsername(this), load.getPassword(this), load.getPort(this), "/getOrders.php", date.getMonth(), date.getDay(), date.getYear());
+                load.getUsername(this), load.getPassword(this), load.getPort(this), "/getOrders.php", "0", date.getDay(), date.getYear(), breakfast, lunch, supper);
     }
 
     @Override
@@ -69,26 +82,55 @@ public class DisplayOrders extends AppCompatActivity implements View.OnClickList
                 EditText day = findViewById(R.id.day);
                 EditText year = findViewById(R.id.year);
 
+                DayAndWeekLogic date = new DayAndWeekLogic();
+                String strBreakfast = "0";
+                String strLunch = "0";
+                String strSupper = "0";
+
+                CheckBox checkBoxBfast = findViewById(R.id.checkBoxBreakfast);
+                CheckBox checkBoxLunch = findViewById(R.id.checkBoxLunch);
+                CheckBox checkBoxSupper = findViewById(R.id.checkBoxSupper);
+                if(!checkBoxBfast.isChecked() && !checkBoxLunch.isChecked() && !checkBoxSupper.isChecked()){
+                    strBreakfast = "1";
+                    strLunch = "1";
+                    strSupper = "1";
+                } else {
+                    if (checkBoxBfast.isChecked()) {
+                        strBreakfast = "1";
+                    }
+
+                    if (checkBoxLunch.isChecked()) {
+                        strLunch = "1";
+                    }
+
+                    if (checkBoxSupper.isChecked()) {
+                        strSupper = "1";
+                    }
+                }
+
                 // the values to import
                 saveAndLoad load = new saveAndLoad();
                 QueryGetOrdersActivity signing = new QueryGetOrdersActivity(this);
                 if(checkedMonth && checkedDay){
                     String condition = "display";
                     signing.execute(condition, load.getServerURL(this), load.getDatabaseURL(this), load.getDatabaseName(this),
-                            load.getUsername(this), load.getPassword(this), load.getPort(this), "/getOrders.php", month.getText().toString(), day.getText().toString(), year.getText().toString());
-                    Toast.makeText(getApplicationContext(),"Both Boxes are checked",Toast.LENGTH_LONG).show();
+                            load.getUsername(this), load.getPassword(this), load.getPort(this), "/getOrders.php",
+                            month.getText().toString(), day.getText().toString(), year.getText().toString(), strBreakfast, strLunch, strSupper);
                 } else if(checkedMonth && !checkedDay){
                     String condition = "display";
                     signing.execute(condition, load.getServerURL(this), load.getDatabaseURL(this), load.getDatabaseName(this),
-                            load.getUsername(this), load.getPassword(this), load.getPort(this), "/getOrders.php", month.getText().toString(), "0", year.getText().toString());
-                    Toast.makeText(getApplicationContext(),"Month Box is checked",Toast.LENGTH_LONG).show();
+                            load.getUsername(this), load.getPassword(this), load.getPort(this), "/getOrders.php",
+                            month.getText().toString(), "0", year.getText().toString(), strBreakfast, strLunch, strSupper);
                 } else if(!checkedMonth && checkedDay){
-                    DayAndWeekLogic date = new DayAndWeekLogic();
                     String condition = "display";
                     signing.execute(condition, load.getServerURL(this), load.getDatabaseURL(this), load.getDatabaseName(this),
-                            load.getUsername(this), load.getPassword(this), load.getPort(this), "/getOrders.php", date.getMonth(), day.getText().toString(), year.getText().toString());
-                    Toast.makeText(getApplicationContext(),"Day Box is checked",Toast.LENGTH_LONG).show();
+                            load.getUsername(this), load.getPassword(this), load.getPort(this), "/getOrders.php",
+                            "0", day.getText().toString(), year.getText().toString(), strBreakfast, strLunch, strSupper);
                 } else {
+                    String condition = "display";
+                    signing.execute(condition, load.getServerURL(this), load.getDatabaseURL(this), load.getDatabaseName(this),
+                            load.getUsername(this), load.getPassword(this), load.getPort(this), "/getOrders.php",
+                            date.getMonth(), date.getDay(), date.getYear(), strBreakfast, strLunch, strSupper);
                     Toast.makeText(getApplicationContext(),"No Boxes are checked",Toast.LENGTH_LONG).show();
                 }
             }
