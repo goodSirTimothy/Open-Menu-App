@@ -141,6 +141,7 @@ public class QueryRoomActivity extends AsyncTask<String, Void, String> {
         table.addView(row, 0);
 
         if(!connectionError) {
+            int fixIndex = 0;
             for (int i = 1; i < results.length + 1; i++) {
                 final String[] resultsArray = results[i - 1].split(",");
                 row = new TableRow(context);
@@ -151,19 +152,22 @@ public class QueryRoomActivity extends AsyncTask<String, Void, String> {
                             row.addView(setupRowView(resultsArray[j], context));
                         }
                     }
+                    row.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent;
+                            intent = new Intent(context, OrderField.class);
+                            intent.putExtra("roomInfo", resultsArray);
+                            String[] oldData = activityReference.get().iOldData;
+                            intent.putExtra("oldData", oldData);
+                            context.startActivity(intent);
+                        }
+                    });
+                    table.addView(row, i - fixIndex);
+                } else {
+                    fixIndex++;
                 }
-                row.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent;
-                        intent = new Intent(context, OrderField.class);
-                        intent.putExtra("roomInfo", resultsArray);
-                        String[] oldData = activityReference.get().iOldData;
-                        intent.putExtra("oldData", oldData);
-                        context.startActivity(intent);
-                    }
-                });
-                table.addView(row, i);
+
             }
         } else {
             String str = "";

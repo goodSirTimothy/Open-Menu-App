@@ -104,6 +104,7 @@ public class DisplayOrders extends AppCompatActivity implements View.OnClickList
             }
             case R.id.submit:{
                 submitClicked();
+                break;
             }
             case R.id.btnSwitchView: {
                 Button btnSwitchView = findViewById(R.id.btnSwitchView);
@@ -114,6 +115,7 @@ public class DisplayOrders extends AppCompatActivity implements View.OnClickList
                     displayOrdersTaken();
                     btnSwitchView.setText("Orders Not Taken");
                 }
+                break;
             }
         }
     }

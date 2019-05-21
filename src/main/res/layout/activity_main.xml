@@ -36,22 +36,48 @@
                 tools:layout_editor_absoluteX="86dp"
                 tools:layout_editor_absoluteY="0dp">
 
+                <LinearLayout
+                    android:id="@+id/layoutMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/menu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="Menu"
+                        android:textAlignment="center"
+                        android:textSize="35sp" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp"
+                        android:background="#c0c0c0" />
+                </LinearLayout>
+
+                <!-- This creates the line -->
+
+
+                <!-- This creates the line -->
                 <TextView
-                    android:id="@+id/menu"
+                    android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="Menu"
+                    android:text="Hallway"
                     android:textAlignment="center"
                     android:textSize="35sp" />
 
-                <!-- This creates the line -->
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="2dp"
                     android:background="#c0c0c0" />
 
-
+                <!-- This creates the line -->
                 <TextView
                     android:id="@+id/orders"
                     android:layout_width="match_parent"
@@ -63,22 +89,6 @@
                     android:textAlignment="center"
                     android:textSize="35sp" />
 
-                <!-- This creates the line -->
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="2dp"
-                    android:background="#c0c0c0" />
-
-                <TextView
-                    android:id="@+id/location"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="Hallway"
-                    android:textAlignment="center"
-                    android:textSize="35sp" />
-
-                <!-- This creates the line -->
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="2dp"
